@@ -15,9 +15,9 @@ class FollowViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Follow.objects.filter(user=user)
+    def get_queryset(self):
+        user = self.request.user
+        return Follow.objects.filter(user=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -37,16 +37,10 @@ class PostViewSet(viewsets.ModelViewSet):
             raise PermissionDenied('Нет доступа к контенту')
         super(PostViewSet, self).perform_update(serializer)
 
-    def perform_destroy(self, instance):
-        if instance.author != self.request.user:
-            raise PermissionDenied('Нет доступа к контенту')
-        super(PostViewSet, self).perform_destroy(instance)
-
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = (ReadOnly,)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
