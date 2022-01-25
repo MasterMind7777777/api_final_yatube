@@ -10,7 +10,7 @@ from rest_framework import filters
 from posts.models import Follow, Group, Post
 from .serializers import (
     FollowSerializer, CommentSerializer, GroupSerializer, PostSerializer)
-from .permisions import OwnerOrReadOnly, ReadOnly
+from .permisions import OwnerOrReadOnly
 
 
 class FollowViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin):
@@ -19,6 +19,7 @@ class FollowViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin):
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['following__username']
+
     def get_queryset(self):
         user = self.request.user
         return Follow.objects.filter(user=user)
