@@ -32,9 +32,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class FollowSerializer(serializers.ModelSerializer):
     following = SlugRelatedField(slug_field='username',
-                                 read_only='True',)
+                                 read_only=True,)
     user = SlugRelatedField(slug_field='username',
-                            read_only='True',)
+                            read_only=True,)
 
     def validate(self, data):
         if Follow.objects.filter(
